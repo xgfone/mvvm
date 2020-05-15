@@ -10,6 +10,7 @@ function Compile(el, vm) {
 }
 
 Compile.prototype = {
+    constructor: Compile,
     node2Fragment: function(el) {
         var fragment = document.createDocumentFragment(),
             child;
@@ -38,7 +39,7 @@ Compile.prototype = {
                 me.compile(node);
 
             } else if (me.isTextNode(node) && reg.test(text)) {
-                me.compileText(node, RegExp.$1);
+                me.compileText(node, RegExp.$1.trim());
             }
 
             if (node.childNodes && node.childNodes.length) {
@@ -141,7 +142,7 @@ var compileUtil = {
     },
 
     _getVMVal: function(vm, exp) {
-        var val = vm._data;
+        var val = vm;
         exp = exp.split('.');
         exp.forEach(function(k) {
             val = val[k];
@@ -150,7 +151,7 @@ var compileUtil = {
     },
 
     _setVMVal: function(vm, exp, value) {
-        var val = vm._data;
+        var val = vm;
         exp = exp.split('.');
         exp.forEach(function(k, i) {
             // 非最后一个key，更新val的值
